@@ -19,7 +19,7 @@ img {
 
 /* 02-timer */
 #datetime-picker{
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 .timer {
   display: flex;
@@ -43,5 +43,3 @@ img {
   font-size: 12px;
   font-weight: 500;
 }
-
-
