@@ -1,1 +1,0 @@
-{"mappings":"AAQAA,QAAQC,IAAI","sources":["src/js/03-promises.js"],"sourcesContent":["function createPromise(position, delay) {\n  const shouldResolve = Math.random() > 0.3;\n  if (shouldResolve) {\n    // Fulfill\n  } else {\n    // Reject\n  }\n}\nconsole.log(\"hello\");\n"],"names":["console","log"],"version":3,"file":"03-promises.f1b45f61.js.map"}
