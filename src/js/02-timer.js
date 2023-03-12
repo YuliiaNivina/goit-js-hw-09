@@ -1,3 +1,4 @@
+import Notiflix from 'notiflix';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -17,33 +18,21 @@ const options = {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  // currentDate: const y,
+
   onClose(selectedDates) {
-    // console.log(selectedDates[0]);
-    //   const x = options.defaultDate.getTime();
-    // const y = selectedDates[0].getTime();
     if (options.defaultDate > selectedDates[0]) {
-      window.alert('Please choose a date in the future');
+      Notiflix.Notify.failure('Please choose a date in the future');
         refs.startBtn.disabled = true;
     } else {
       refs.startBtn.disabled = false;
-      // timer.start();
     }
   },
 };
 
 const fp = flatpickr(refs.input, options);
-// const fp = flatpickr("#datetime-picker", {});
-
-// refs.input.addEventListener("input", (evt) => {
-//   const xxx = evt.currentTarget.value;
-//   console.log("input", evt.currentTarget.value);
-// });
-// console.log(xxx);
 
 const timer = {
   idInterval: null,
-  // isActive: false,
 
   calculateData(time) {
     refs.startBtn.disabled = true;
@@ -63,35 +52,9 @@ const timer = {
   },
 
   start(time) {
-    // if (this.isActive) {
-    //   return;
-    // }
-    // this.isActive = true;
-    // refs.startBtn.disabled = true;
-    // refs.input.disabled = true;
-
-    // this.calculateData(time);
     this.idInterval = setInterval(() => {
       this.calculateData(time);
-      // const currentDate = refs.input.value;
-
-      // const deltaTime = new Date(time) - Date.now();!!!
-
-      // const deltaTime = refs.input.value - options.defaultDate;
-
-      // const convertTime = convertMs(deltaTime);!!!
-
-      // console.log(refs.input.value);
-
-      // onTimerChange(convertTime);!!!
-
-      // console.log(deltaTime);
-      // console.log(`${days}:${hours}:${minutes}:${seconds}`);
-      // options.onClose(currentDate);
     }, 1000);
-    // console.log(refs.input.value);
-    // console.log(options.defaultDate.getTime());
-    // console.log(deltaTime);
   },
 
   stop() {
@@ -100,11 +63,6 @@ const timer = {
 };
 
 refs.startBtn.addEventListener('click', () => {
-  // const xxx = refs.input.value;
-  //   refs.input.addEventListener("input", (evt) => {
-  //   const xxx = refs.input.value;
-  //   // console.log("input", evt.currentTarget.value);
-  // });
   timer.start(refs.input.value);
 });
 
@@ -139,10 +97,3 @@ function onTimerChange({ days, hours, minutes, seconds }) {
   refs.minutes.textContent = minutes;
   refs.seconds.textContent = seconds;
 }
-
-// console.log(fp);
-// console.log(refs.input);
-// console.log(options);
-
-console.log('hello');
-// console.log(options.currentDate - options.defaultDate);
