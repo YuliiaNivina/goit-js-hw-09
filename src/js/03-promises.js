@@ -38,10 +38,7 @@ function onClickCreatePromiseBtn(evt) {
       .catch(({ position, delay }) => {
         Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       });
-
-    // console.log(delayValue);
-    // console.log(stepValue);
-    // console.log(amountValue);
-    // console.log(delay);
+    
+    evt.currentTarget.reset();
   }
 }

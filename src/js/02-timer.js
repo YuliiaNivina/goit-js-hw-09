@@ -52,6 +52,8 @@ const timer = {
   },
 
   start(time) {
+
+    this.calculateData(time);
     this.idInterval = setInterval(() => {
       this.calculateData(time);
     }, 1000);
