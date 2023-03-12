@@ -4,11 +4,11 @@ import 'flatpickr/dist/flatpickr.min.css';
 const refs = {
   input: document.querySelector('#datetime-picker'),
   startBtn: document.querySelector('button[data-start]'),
+  days: document.querySelector('span[data-days]'),
+  hours: document.querySelector('span[data-hours]'),
+  minutes: document.querySelector('span[data-minutes]'),
+  seconds: document.querySelector('span[data-seconds]'),
 };
-
-refs.startBtn.addEventListener("click", onStartBtnClick);
-
-// console.log(refs.startBtn);
 
 refs.startBtn.disabled = true;
 
@@ -17,22 +17,56 @@ const options = {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
-    //   const x = options.defaultDate.getTime();
-    //   const y = selectedDates[0].getTime();
-    if (options.defaultDate.getTime() > selectedDates[0].getTime()) {
+    if (options.defaultDate > selectedDates[0]) {
       window.alert('Please choose a date in the future');
-    //   refs.startBtn.disabled = true;
-    }else refs.startBtn.disabled = false;
+        refs.startBtn.disabled = true;
+    } else {
+      refs.startBtn.disabled = false;
+    }
   },
 };
 
 const fp = flatpickr(refs.input, options);
-// const fp = flatpickr("#datetime-picker", {});
 
-function onStartBtnClick(evt) {
+const timer = {
+  idInterval: null,
+
+  calculateData(time) {
+    refs.startBtn.disabled = true;
+    refs.input.disabled = true;
+
+    const deltaTime = new Date(time) - Date.now();
     
+    if (deltaTime > 0) {
+      const convertTime = convertMs(deltaTime);
+      onTimerChange(convertTime);
+    } else {
+      this.stop();
+      
+      refs.startBtn.disabled = false;
+      refs.input.disabled = false;
+    }
+  },
+
+  start(time) {
+    this.idInterval = setInterval(() => {
+      this.calculateData(time);
+    }, 1000);
+  },
+
+  stop() {
+    clearInterval(this.idInterval);
+  },
+};
+
+refs.startBtn.addEventListener('click', () => {
+  timer.start(refs.input.value);
+});
+
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
 }
 
 function convertMs(ms) {
@@ -43,19 +77,22 @@ function convertMs(ms) {
   const day = hour * 24;
 
   // Remaining days
-  const days = Math.floor(ms / day);
+  const days = addLeadingZero(Math.floor(ms / day));
   // Remaining hours
-  const hours = Math.floor((ms % day) / hour);
+  const hours = addLeadingZero(Math.floor((ms % day) / hour));
   // Remaining minutes
-  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = addLeadingZero(
+    Math.floor((((ms % day) % hour) % minute) / second)
+  );
 
   return { days, hours, minutes, seconds };
 }
 
-// console.log(fp);
-// console.log(refs.input);
-// console.log(options);
-console.log(refs.input.value);
-console.log("hello");
+function onTimerChange({ days, hours, minutes, seconds }) {
+  refs.days.textContent = days;
+  refs.hours.textContent = hours;
+  refs.minutes.textContent = minutes;
+  refs.seconds.textContent = seconds;
+}
